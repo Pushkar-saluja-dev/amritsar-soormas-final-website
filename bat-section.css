@@ -163,3 +163,27 @@
 
 .mf1-security-feature::before{border-color:rgba(196,144,15,.45)}
 .mf1-security-page-indicator{color:var(--gold-deep)}
+
+/* --- mobile ---
+   Below 992px the graphic becomes a 300vw scroll-snap strip. The panel was left
+   tall enough for the desktop framing, so most of it was blank paper above the
+   bat, and nothing said the strip could be swiped. */
+@media screen and (max-width:991px){
+  .mf1-security-page-indicators{bottom:14px}
+  /* swipe affordance, since the strip gives no other hint */
+  .mf1-security-text-area::after{
+    content:'Swipe to explore \2192';
+    color:var(--gold-deep);font-size:.68rem;font-weight:800;
+    letter-spacing:.22em;text-transform:uppercase;opacity:.75;
+  }
+}
+
+/* Phones only. Tablets keep the copy's own sizing, which frames the strip fine at
+   that width — below ~600px the panel was mostly blank paper with the bat pushed
+   off the bottom. Raising the art any further than this collides the feature
+   cards, which pop upward out of the lockboxes, with the headline. */
+@media screen and (max-width:600px){
+  .mf1-security-layout{height:calc(270px + 80vw)}
+  .mf1-security-canvas-offset{bottom:-24%}
+  .mf1-security-content-container{padding-top:1.5rem}
+}
