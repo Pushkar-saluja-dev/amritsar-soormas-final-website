@@ -1,0 +1,14 @@
+# tooling scratch — sharp is installed on demand by tools/*.js
+node_modules/
+package.json
+package-lock.json
+
+# playwright / screenshot output
+.playwright-mcp/
+*.jpeg
+!assets/**/*.jpeg
+!Branding Stuff/**/*.jpeg
+
+# OS
+Thumbs.db
+.DS_Store

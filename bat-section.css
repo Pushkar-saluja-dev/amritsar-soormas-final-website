@@ -1,0 +1,165 @@
+/* ===========================================================
+   "Every Soorma carries more than a bat" section.
+   Lifted verbatim from the experiment build (Desktop/expiremen):
+   rules from dash.css + the :root layout/colour variables it depends on.
+   Only the asset paths in index.html were repointed at assets/bat/.
+   Do not restyle — this block is meant to stay a faithful copy.
+   =========================================================== */
+
+:root {
+  /* Layout Variables */
+  --body-margin: max(20px, max(env(safe-area-inset-left), env(safe-area-inset-right)));
+  --body-max-width: 1920px;
+  --body-field-gutter: 8px;
+  /* Color Variables */
+  --dbx-blue-rgb: 0, 97, 254;
+  --mclaren-f1--graphite: #1e1919;
+  --mclaren-f1--dbx-blue: #0061fe;
+  --mclaren-f1--global-white: white;
+  --mclaren-f1--gray-100: #ebe9e6;
+}
+@media (min-width: 768px) {
+  :root {
+    --body-margin: max(32px, max(env(safe-area-inset-left), env(safe-area-inset-right)));
+    --body-field-gutter: 16px;
+  }
+}
+@media (min-width: 1080px) {
+  :root {
+    --body-margin: max(48px, max(env(safe-area-inset-left), env(safe-area-inset-right)));
+  }
+}
+
+.mf1-security-section .w-embed { line-height: 0; margin: 0 }
+
+/* --- webflow layout primitives --- */
+.w-container{max-width:940px;margin-left:auto;margin-right:auto}
+.w-container:before,.w-container:after{content:" ";grid-area:1/1/2/2;display:table}
+.w-container:after{clear:both}
+.w-container .w-row{margin-left:-10px;margin-right:-10px}
+@media screen and (max-width:991px){
+  .w-container{max-width:728px}
+}
+@media screen and (max-width:767px){
+  .w-row,.w-container .w-row{margin-left:0;margin-right:0}
+}
+@media screen and (max-width:479px){
+  .w-container{max-width:none}
+}
+.w-layout-blockcontainer{max-width:940px;margin-left:auto;margin-right:auto;display:block}
+@media screen and (max-width:991px){
+  .w-layout-blockcontainer{max-width:728px}
+}
+@media screen and (max-width:767px){
+  .w-layout-blockcontainer{max-width:none}
+}
+
+/* --- section --- */
+.mf1-security-section{color:#1e1919;--_mclaren-color-variables---glass:var(--mclaren-f1--white-glass);--_mclaren-color-variables---subtle-text:var(--mclaren-f1--gray-600);--_mclaren-color-variables---base:var(--mclaren-f1--global-white);--_mclaren-color-variables---overlay-2:var(--mclaren-f1--gray-100);--_mclaren-color-variables---cta:var(--mclaren-f1--dbx-blue);--_mclaren-color-variables---cta-text:var(--mclaren-f1--global-white);--_mclaren-color-variables---caption:var(--mclaren-f1--dbx-blue);--_mclaren-color-variables---text:var(--mclaren-f1--graphite);--_mclaren-color-variables---overlay-1:var(--mclaren-f1--gray-50);padding-left:var(--body-margin);padding-right:var(--body-margin);background-color:#fff;overflow:clip}
+
+.mf1-security-layout{max-height:1400px;max-width:var(--body-max-width);height:min(80vh,60vw);min-height:calc(500px + (min(100vw,var(--body-max-width))*.25));grid-template-rows:auto auto;grid-template-columns:1fr 1fr;grid-auto-columns:1fr;position:relative}
+
+.mf1-security-graphic{position:absolute;inset:0%}
+.mf1-security-canvas-container{justify-content:center;align-items:flex-end;display:flex;position:absolute;inset:0% -15%}
+.mf1-security-canvas-square{width:100%;height:100%;position:relative}
+.mf1-security-canvas-offset{width:100%;height:100%;position:relative;bottom:-25%}
+.mf1-security-canvas-embed{width:100%;height:100%;position:absolute;inset:0%}
+.mf1-security-canvas-resizing-script{display:none}
+
+.mf1-security-canvas-scrim-right{background-image:linear-gradient(270deg,#fff,#ffffff80 70%,#fff0);position:absolute;inset:0% -15% 0% 90%}
+.mf1-security-canvas-scrim-left{background-image:linear-gradient(90deg,#fff,#ffffff80 70%,#fff0);position:absolute;inset:0% 90% 0% -15%}
+.mf1-security-canvas-scrim-bottom{background-image:linear-gradient(#fff0,#ffffff80 30%,#fff);height:48px;position:absolute;inset:auto -50vw 0%}
+
+.mf1-security-feature-anchor{z-index:20;width:2px;height:2px;position:absolute}
+.mf1-security-feature-anchor.mf1-anchor-1{height:10%;bottom:35%;left:32%}
+.mf1-security-feature-anchor.mf1-anchor-2{height:12%;bottom:38.5%;left:56%}
+.mf1-security-feature-anchor.mf1-anchor-3{height:7%;bottom:42.75%;left:73.5%}
+
+.mf1-security-feature{transform-origin:50% 100%;border-radius:12px;width:250px;transition:transform .4s cubic-bezier(.15,.5,.05,1);position:absolute;bottom:100%;left:-125px;transform:rotate(-30deg)scale(.08)}
+.mf1-security-feature-image{border-radius:inherit;-webkit-user-select:none;user-select:none;width:100%;box-shadow:0 8px 24px #00000014}
+
+.mf1-security-content-container{grid-column-gap:var(--body-grid-gutter);grid-row-gap:var(--body-grid-gutter);grid-template-rows:auto;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;grid-auto-columns:1fr;width:100%;display:grid;position:relative}
+#w-node-cb2fc037-d0cb-4d7e-781d-6b4e542584b5-f9f398e2{grid-area:span 1/span 12/span 1/span 12}
+#w-node-cb2fc037-d0cb-4d7e-781d-6b4e542584b7-f9f398e2{grid-area:1/3/2/11}
+@media screen and (max-width:991px){
+  #w-node-cb2fc037-d0cb-4d7e-781d-6b4e542584b7-f9f398e2{grid-column:1/13}
+}
+
+.mf1-security-text-area{grid-column-gap:12px;grid-row-gap:12px;flex-flow:column;justify-content:center;align-items:flex-start;display:flex;position:relative}
+.mf1-security-text-area-scrim{background-image:linear-gradient(#fff,#ffffff80 60%,#fff0);position:absolute;inset:0% -50vw -50%}
+
+.mf1-security-page-indicators{grid-column-gap:12px;grid-row-gap:12px;justify-content:center;align-items:center;height:8px;display:none;position:absolute;inset:auto 0% 0%}
+.mf1-security-page-indicator{flex:none;width:8px;height:8px}
+
+.mf1-h2{max-width:1080px;color:var(--_mclaren-color-variables---text);margin-top:0;margin-bottom:0;font-family:DB Sharp Grotesk Variable,sans-serif;font-size:48px;font-weight:500;line-height:1.2}
+.mf1-h2.mf1-conclusion-heading{text-align:center}
+
+@media screen and (max-width:991px){
+  .mf1-security-feature-anchor{scroll-snap-align:center}
+  .mf1-security-page-indicator{transition:opacity .15s}
+  .mf1-security-layout{height:calc(500px + 80vw);min-height:0;max-height:none}
+  .mf1-security-canvas-scrim-right{display:none}
+  .mf1-security-canvas-container{width:300vw;height:100%;position:relative;inset:auto}
+  .mf1-security-page-indicators{grid-column-gap:12px;grid-row-gap:12px;pointer-events:none;flex-flow:row;justify-content:center;align-items:center;display:flex}
+  .mf1-h2{font-size:40px}
+  .mf1-security-graphic{left:calc(0px - var(--body-margin));right:calc(0px - var(--body-margin));scroll-snap-type:x mandatory;overflow:scroll clip}
+  .mf1-conclusion-break,.mf1-security-canvas-scrim-left{display:none}
+}
+@media screen and (max-width:767px){
+  .mf1-security-section{padding-top:24px}
+  .mf1-h2{font-size:30px}
+}
+@media screen and (max-width:479px){
+  .mf1-security-layout{height:calc(450px + 80vw)}
+  .mf1-security-feature{width:200px;left:-100px}
+  .mf1-blockquote,.mf1-h2{font-size:24px}
+}
+
+/* ===========================================================
+   Theme overrides — everything above this line is the copy.
+
+   The canvas itself is left completely alone: both textures are the original
+   artwork and the shader is unmodified, so the reveal animation and the colours
+   of the splice are exactly as drawn. Anything that recolours the sheet also
+   changes the reveal, because the shader sizes its spotlight mask from the
+   artwork's own brightness.
+
+   So the sheet stays a white spec sheet and the theming goes around it — it sits
+   as a framed panel on the Soormas navy, with the blue accents swapped for gold.
+   =========================================================== */
+
+.mf1-security-section{
+  /* the lockbox glow/ring read these — swap Dropbox blue for gold */
+  --dbx-blue-rgb:196,144,15;
+  --mclaren-f1--dbx-blue:var(--gold);
+  background-color:var(--navy);
+  border-top:3px solid var(--gold);
+  border-bottom:3px solid var(--gold);
+  padding:clamp(2.5rem,5vw,4.5rem) var(--body-margin);
+}
+
+/* the sheet becomes a panel rather than a full-bleed white band */
+.mf1-security-layout{
+  background:#fff;
+  border:1px solid rgba(196,144,15,.55);
+  border-radius:18px;
+  overflow:clip;
+  box-shadow:0 30px 70px rgba(0,0,0,.55);
+}
+
+/* the copy sat flush against the top of the panel; drop it into the empty band
+   above the bat. The graphic is absolutely positioned, so this moves text only. */
+.mf1-security-content-container{padding-top:clamp(1.75rem,7vw,7rem)}
+
+.mf1-h2{
+  font-family:'Archivo',system-ui,sans-serif;font-weight:800;
+  letter-spacing:-.01em;
+}
+.mf1-security-text-area::before{
+  content:'Amritsar Soormas';
+  color:var(--gold-deep);font-size:.74rem;font-weight:800;
+  letter-spacing:.34em;text-transform:uppercase;
+}
+
+.mf1-security-feature::before{border-color:rgba(196,144,15,.45)}
+.mf1-security-page-indicator{color:var(--gold-deep)}
