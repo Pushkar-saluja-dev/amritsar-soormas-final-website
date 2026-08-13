@@ -170,16 +170,17 @@
    bat, and nothing said the strip could be swiped. */
 @media screen and (max-width:991px){
   .mf1-security-page-indicators{bottom:14px}
-  /* Swipe affordance, since the strip gives no other hint. It sits at the height
-     the feature cards pop up to, so it carries its own plate — the copy layer is
-     already above the cards, it just needs something opaque behind it. */
-  .mf1-security-text-area::after{
+  /* Swipe affordance, since the strip gives no other hint. It hangs off the page
+     indicators rather than the copy: those are pinned to the bottom of the panel,
+     which is the one band the feature cards never pop into. */
+  .mf1-security-page-indicators::before{
     content:'Swipe to explore \2192';
+    position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
+    margin-bottom:14px;white-space:nowrap;
     color:var(--gold-deep);font-size:.66rem;font-weight:800;
     letter-spacing:.2em;text-transform:uppercase;
     background:#fff;border:1px solid rgba(196,144,15,.45);
-    border-radius:999px;padding:.4rem .8rem;margin-top:.35rem;
-    position:relative;z-index:30;
+    border-radius:999px;padding:.4rem .85rem;
   }
 }
 
@@ -190,5 +191,9 @@
 @media screen and (max-width:600px){
   .mf1-security-layout{height:calc(270px + 80vw)}
   .mf1-security-canvas-offset{bottom:-24%}
-  .mf1-security-content-container{padding-top:1.5rem}
+  /* the copy rides high so the headline clears the top of the popped card */
+  .mf1-security-content-container{padding-top:.35rem}
+  /* cards grow upward out of the lockbox, so the tallest one (the portrait
+     manifesto) reached into the headline at 200px wide */
+  .mf1-security-feature{width:150px;left:-75px}
 }
