@@ -1,0 +1,10 @@
+# Source art (~157 MB) — assets/ is already cut from it, nothing here is served.
+Branding Stuff/
+
+# Build-time only: re-cuts assets/ from the source art above
+tools/
+
+node_modules/
+package.json
+package-lock.json
+.playwright-mcp/

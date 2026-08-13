@@ -169,6 +169,9 @@
    tall enough for the desktop framing, so most of it was blank paper above the
    bat, and nothing said the strip could be swiped. */
 @media screen and (max-width:991px){
+  /* the copy spans the full 12 columns here, so it needs its own gutter or it
+     sits flush against the panel edge */
+  .mf1-security-content-container{padding-inline:1.15rem}
   .mf1-security-page-indicators{bottom:14px}
   /* Swipe affordance, since the strip gives no other hint. It hangs off the page
      indicators rather than the copy: those are pinned to the bottom of the panel,
