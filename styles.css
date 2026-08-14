@@ -184,11 +184,6 @@ h1,h2,h3{margin:0;line-height:1.05}
 .panel-line{margin:0;color:#c3cddd;font-size:.92rem;font-style:italic;
   padding-bottom:1.3rem;border-bottom:1px solid rgba(255,255,255,.12)}
 .panel-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.4rem}
-.stat-panel .ghost{
-  position:absolute;right:-.12em;top:50%;transform:translateY(-50%);
-  font-family:var(--display);font-size:11rem;line-height:.8;
-  color:rgba(255,255,255,.055);pointer-events:none;user-select:none;
-}
 .stat-panel .meta > div{margin-bottom:1.05rem}
 .stat-panel .lbl{display:block;color:var(--gold-lt);font-size:.66rem;font-weight:800;
   letter-spacing:.2em;text-transform:uppercase;margin-bottom:.2rem}
@@ -203,6 +198,9 @@ h1,h2,h3{margin:0;line-height:1.05}
   gap:1rem;padding:.55rem 0;font-size:1rem;
   border-bottom:1px dashed rgba(255,255,255,.08)}
 .stats li:last-child{border-bottom:0}
+/* scopes the four tiles — without it the numbers read as career-anything */
+.stats .cap{display:block;padding:0 0 .55rem;border-bottom:0;color:var(--gold-lt);
+  font-size:.62rem;font-weight:800;letter-spacing:.24em;text-transform:uppercase}
 .stats span{color:var(--muted);font-weight:700;font-size:.74rem;letter-spacing:.16em}
 .stats b{font-weight:800;letter-spacing:.02em}
 
@@ -312,7 +310,6 @@ h1,h2,h3{margin:0;line-height:1.05}
   .panel-body{grid-template-columns:1fr;gap:1.4rem}
   .stat-panel{gap:1.4rem;padding:1.5rem}
   .stats{border-left:0;padding-left:0;border-top:1px solid rgba(255,255,255,.14);padding-top:1rem}
-  .stat-panel .ghost{font-size:7rem}
   .footer-grid{grid-template-columns:1fr}
   .footer-bar-in{justify-content:center;text-align:center}
 }
