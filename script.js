@@ -78,7 +78,7 @@
   if (picker && teamsMap) {
     var chips = Array.prototype.slice.call(picker.querySelectorAll('.team-chip'));
     var frames = Array.prototype.slice.call(teamsMap.querySelectorAll('.map-frame'));
-    var HOLD = 4000;
+    var HOLD = 4000;   // keep in step with the chip-hold animation in styles.css
     var current = 0;
     var timer = null;
     var inView = !('IntersectionObserver' in window);
@@ -86,8 +86,15 @@
     function show(i) {
       current = (i + chips.length) % chips.length;
       chips.forEach(function (c, n) {
-        c.classList.toggle('is-active', n === current);
-        c.setAttribute('aria-pressed', n === current);
+        var on = n === current;
+        // re-adding the class restarts the chip's countdown hairline, which matters when
+        // the same chip is picked twice in a row
+        if (on && c.classList.contains('is-active')) {
+          c.classList.remove('is-active');
+          void c.offsetWidth;
+        }
+        c.classList.toggle('is-active', on);
+        c.setAttribute('aria-pressed', on);
       });
       frames.forEach(function (f, n) {
         f.classList.toggle('is-on', n === current);
@@ -97,10 +104,12 @@
     function play() {
       stop();
       if (!inView || document.hidden) return;
+      picker.classList.remove('is-paused');
       timer = setInterval(function () { show(current + 1); }, HOLD);
     }
     function stop() {
       if (timer) { clearInterval(timer); timer = null; }
+      picker.classList.add('is-paused');   // freezes the countdown hairline too
     }
 
     picker.addEventListener('click', function (e) {
