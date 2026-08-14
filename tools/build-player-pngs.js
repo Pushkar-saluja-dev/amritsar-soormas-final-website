@@ -27,7 +27,7 @@ const PLAYERS = [
   ['17', 'navneet-virk', 560],
   ['18', 'akash-pandey', 560],
   ['19', 'vaibhav-kalra', 560],
-  ['20', 'jai-pratap-johal', 560],
+  ['20', 'jai-partap-johal', 560],
 ];
 
 (async () => {
