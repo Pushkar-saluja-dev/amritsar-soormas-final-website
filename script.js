@@ -60,8 +60,11 @@
       var open = nav.classList.toggle('open');
       toggle.setAttribute('aria-expanded', open);
     };
+    // close on a jump link only — the social links open a new tab and the click may
+    // land on the icon's <svg>, not the <a>
     nav.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') {
+      var link = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (link) {
         nav.classList.remove('open');
         toggle.setAttribute('aria-expanded', 'false');
       }

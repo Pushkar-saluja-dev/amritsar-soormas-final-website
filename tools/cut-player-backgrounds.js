@@ -1,4 +1,9 @@
-/* Cut the white studio backdrop off the squad portraits and emit brand-ready PNGs. */
+/* Cut the white studio backdrop off the squad portraits and emit brand-ready PNGs.
+
+   SUPERSEDED. The client later supplied proper cut-outs in Branding Stuff/assets_/images/png,
+   which build-player-pngs.js turns into the shipped assets/players/*.webp — every player on
+   the roster is covered there. Running this script again overwrites those with the
+   machine-cut versions, so only do that for a player the supplied set is missing. */
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');

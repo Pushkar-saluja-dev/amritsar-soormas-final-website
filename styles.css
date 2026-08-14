@@ -2,19 +2,30 @@
    Amritsar Soormas — Sher-e-Punjab T20 League 2026
    =========================================================== */
 
+/* Brand kit: HEADSOME & modif Cut1 sets every name, Montserrat carries everything else. */
+@font-face{
+  font-family:'Headsome Modif Cut1';
+  src:url('assets/fonts/headsome-modif-cut1.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap;
+}
+
 :root{
-  --bg:#05070e;
-  --bg-2:#0a1020;
-  --navy:#101a2e;
-  --navy-map:#102240;
-  --gold:#c4900f;
-  --gold-lt:#efb63a;
-  --gold-deep:#8a6208;
-  --red:#8c0e12;
-  --red-lt:#c0242b;
+  /* brand kit */
+  --crimson:#9e0f0e;
+  --navy:#202b42;
+  --gold:#be8740;
+
+  --bg:#080b12;
+  --bg-2:#111a2b;
+  --navy-map:var(--navy);
+  --gold-lt:#dcab6a;
+  --gold-deep:#8a5f27;
+  --red:var(--crimson);
+  --red-lt:#c9201d;
   --text:#f2f5fa;
-  --muted:#93a3bc;
+  --muted:#94a2b8;
   --line:rgba(255,255,255,.28);
+  --display:'Headsome Modif Cut1','Montserrat',system-ui,sans-serif;
   --wrap:1240px;
   --hdr:76px;
 }
@@ -23,7 +34,7 @@
 html{scroll-behavior:smooth;scroll-padding-top:var(--hdr)}
 body{
   margin:0;background:var(--bg);color:var(--text);
-  font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',sans-serif;
   font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
@@ -37,15 +48,23 @@ h1,h2,h3{margin:0;line-height:1.05}
   position:sticky;top:0;z-index:60;height:var(--hdr);
   display:flex;align-items:center;gap:1.25rem;
   padding:0 clamp(1rem,3vw,2rem);
-  background:rgba(5,7,14,.86);
+  background:rgba(8,11,18,.88);
   backdrop-filter:blur(10px);
-  border-bottom:1px solid rgba(196,144,15,.28);
+  border-bottom:1px solid rgba(190,135,64,.32);
 }
 .brand img{height:52px;width:auto}
-.nav{display:flex;gap:1.6rem;margin-left:auto;font-size:.82rem;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase}
-.nav a{color:#cbd6e6;padding:.35rem 0;border-bottom:2px solid transparent;transition:.2s}
-.nav a:hover{color:var(--gold-lt);border-bottom-color:var(--gold)}
+.nav{display:flex;align-items:center;gap:1.6rem;margin-left:auto;font-size:.82rem;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.nav > a{color:#cbd6e6;padding:.35rem 0;white-space:nowrap;
+  border-bottom:2px solid transparent;transition:.2s}
+.nav > a:hover{color:var(--gold-lt);border-bottom-color:var(--gold)}
+/* socials ride at the end of the menu row, and drop into the panel on small screens */
+.nav-social{display:flex;align-items:center;gap:.7rem;
+  padding-left:1.1rem;border-left:1px solid rgba(255,255,255,.16)}
+.nav-social .soc{margin:0;padding:.3rem;border-radius:8px;line-height:0}
+.nav-social .soc svg{width:20px;height:20px}
+.nav-social .soc-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.nav-social .soc:hover{background:rgba(255,255,255,.1)}
 .header-marks{display:flex;align-items:center;gap:.9rem;padding-left:1.4rem;
   margin-left:.4rem;border-left:1px solid rgba(255,255,255,.16)}
 .header-marks img{height:40px;width:auto}
@@ -98,8 +117,8 @@ h1,h2,h3{margin:0;line-height:1.05}
   background:radial-gradient(120% 80% at 50% 40%,rgba(5,7,14,.35),rgba(5,7,14,.86))}
 
 .section-title{
-  font-family:'Archivo',sans-serif;font-weight:900;text-align:center;
-  font-size:clamp(1.9rem,4.6vw,3.1rem);letter-spacing:.02em;text-transform:uppercase;
+  font-family:var(--display);font-weight:400;text-align:center;
+  font-size:clamp(2.1rem,5.2vw,3.5rem);letter-spacing:.03em;text-transform:uppercase;
   text-shadow:0 4px 18px rgba(0,0,0,.6);
 }
 .sub{text-align:center;color:var(--gold-lt);font-size:.76rem;font-weight:800;
@@ -115,34 +134,37 @@ h1,h2,h3{margin:0;line-height:1.05}
   display:flex;flex-direction:column;
 }
 .card:hover{transform:translateY(-6px);border-color:var(--gold);
-  box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 0 1px rgba(196,144,15,.35)}
-/* player art is supplied as cut-outs, so the card paints its own backdrop */
+  box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 0 1px rgba(190,135,64,.35)}
+/* player art is supplied as cut-outs, so the card paints the brand stadium plate behind it */
 .card-img{
   position:relative;overflow:hidden;
   background:
-    radial-gradient(75% 60% at 50% 92%,rgba(196,144,15,.32),transparent 70%),
-    linear-gradient(180deg,#16213a 0%,#241021 55%,#4a1015 100%);
+    linear-gradient(180deg,rgba(32,43,66,.35),rgba(8,11,18,0) 38%,rgba(8,11,18,.72) 100%),
+    url('assets/players/card-bg.webp') center/cover no-repeat;
 }
+/* the gold slab the figure stands against, straight off the brand creative */
 .card-img::before{
-  content:'';position:absolute;inset:0;
-  background:url('assets/texture-1.jpg') center/cover no-repeat;
-  opacity:.3;mix-blend-mode:screen;
+  content:'';position:absolute;left:50%;top:5%;
+  width:46%;height:72%;transform:translateX(-50%);
+  background:linear-gradient(180deg,var(--gold-lt),var(--gold) 45%,var(--gold-deep));
+  box-shadow:0 0 44px rgba(190,135,64,.35);
 }
 .card-img img{position:relative;width:100%;height:100%;
   object-fit:contain;object-position:50% 100%;
   filter:drop-shadow(0 10px 18px rgba(0,0,0,.55));transition:transform .5s}
 .card:hover .card-img img{transform:scale(1.05)}
 .card-name{
-  background:linear-gradient(180deg,var(--gold) 0%,var(--gold-deep) 100%);
-  color:#fff;text-align:center;padding:.65rem .55rem;
-  text-shadow:0 1px 2px rgba(0,0,0,.35);
-  margin-top:auto;display:grid;align-content:center;gap:.15rem;
-  min-height:5.2rem;line-height:1.2;
+  background:linear-gradient(180deg,#cd9750 0%,var(--gold) 52%,#a06f31 100%);
+  color:#fff;text-align:center;padding:.7rem .55rem;
+  border-top:1px solid rgba(255,255,255,.22);
+  margin-top:auto;display:grid;align-content:center;gap:.25rem;
+  min-height:5.2rem;line-height:1.1;
 }
-.card-name b{font-weight:800;text-transform:uppercase;letter-spacing:.04em;
-  font-size:clamp(.82rem,1.35vw,1.05rem)}
-.card-name em{font-style:normal;font-weight:600;font-size:.68rem;letter-spacing:.08em;
-  text-transform:uppercase;color:rgba(255,255,255,.82)}
+.card-name b{font-family:var(--display);font-weight:400;text-transform:uppercase;
+  letter-spacing:.045em;font-size:clamp(.95rem,1.6vw,1.25rem);
+  text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.card-name em{font-style:normal;font-weight:700;font-size:.66rem;letter-spacing:.09em;
+  text-transform:uppercase;color:rgba(24,32,50,.92)}
 
 /* ---------- 2. marquee ---------- */
 .marquee-grid{
@@ -156,15 +178,15 @@ h1,h2,h3{margin:0;line-height:1.05}
   border:1px solid var(--line);border-radius:10px;
   padding:2.2rem;display:flex;flex-direction:column;justify-content:center;gap:2.2rem;
 }
-.panel-head h3{font-family:'Anton',sans-serif;font-size:clamp(1.9rem,3vw,2.6rem);
-  text-transform:uppercase;letter-spacing:.01em;margin:.15rem 0 .5rem}
+.panel-head h3{font-family:var(--display);font-weight:400;font-size:clamp(2rem,3.2vw,2.9rem);
+  text-transform:uppercase;letter-spacing:.02em;margin:.15rem 0 .5rem}
 .panel-head .eyebrow{margin:0}
 .panel-line{margin:0;color:#c3cddd;font-size:.92rem;font-style:italic;
   padding-bottom:1.3rem;border-bottom:1px solid rgba(255,255,255,.12)}
 .panel-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.4rem}
 .stat-panel .ghost{
   position:absolute;right:-.12em;top:50%;transform:translateY(-50%);
-  font-family:'Anton',sans-serif;font-size:11rem;line-height:.8;
+  font-family:var(--display);font-size:11rem;line-height:.8;
   color:rgba(255,255,255,.055);pointer-events:none;user-select:none;
 }
 .stat-panel .meta > div{margin-bottom:1.05rem}
@@ -208,8 +230,40 @@ h1,h2,h3{margin:0;line-height:1.05}
   gap:1rem;margin-bottom:1.8rem}
 .teams-head img{height:58px;width:auto;border-radius:5px}
 .teams-head .sep{height:66px}
-.map-frame{border:1px solid rgba(255,255,255,.16);border-radius:10px;overflow:hidden}
-.map-frame img{width:100%}
+
+/* The deck slide baked its headline, copy and city labels into one 1900px JPEG, which is
+   why this block could never reflow. The map is now a cut-out and everything on top of it
+   is real text, so the section scales all the way down. */
+.map-block{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);
+  gap:clamp(1.5rem,4vw,3rem);align-items:center}
+.map-copy .section-title{text-align:left;font-size:clamp(2.2rem,5vw,3.6rem);color:var(--gold-lt)}
+.map-copy .section-title::after{content:'';display:block;width:104px;height:4px;
+  margin-top:.7rem;background:var(--gold);border-radius:2px}
+.map-copy p{margin:1.3rem 0 0;color:#dbe3f0;font-size:clamp(.95rem,1.5vw,1.1rem);font-weight:500}
+.map-copy .map-note{color:var(--gold-lt);font-weight:700;font-style:italic}
+
+.map-frame{position:relative}
+.map-frame img{width:100%;height:auto;
+  filter:drop-shadow(0 24px 44px rgba(0,0,0,.55))}
+
+.map-pins{list-style:none;margin:0;padding:0;position:absolute;inset:0}
+.pin{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%)}
+.pin::before{
+  content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:11px;height:11px;border-radius:50%;
+  background:#fff;box-shadow:0 0 0 3px rgba(32,43,66,.75);
+}
+.pin span{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);white-space:nowrap;
+  font-size:clamp(.56rem,1.05vw,.74rem);font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;color:#fff;
+  background:rgba(32,43,66,.88);border:1px solid rgba(190,135,64,.55);
+  border-radius:999px;padding:.28em .7em;
+  box-shadow:0 6px 16px rgba(0,0,0,.4);
+}
+.pin-left span{left:auto;right:16px}
+.pin.is-home::before{background:var(--gold-lt);box-shadow:0 0 0 4px rgba(190,135,64,.35)}
+.pin.is-home span{background:var(--gold);border-color:var(--gold-lt);color:#151a26}
 .team-logos{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
   gap:1rem;margin-top:2rem;
@@ -219,7 +273,7 @@ h1,h2,h3{margin:0;line-height:1.05}
   padding:1rem .75rem;text-align:center;transition:.25s;
 }
 .team-chip:hover{border-color:var(--gold);transform:translateY(-4px)}
-.team-chip.is-home{border-color:var(--gold);background:rgba(196,144,15,.1)}
+.team-chip.is-home{border-color:var(--gold);background:rgba(190,135,64,.1)}
 .team-chip img{height:74px;width:auto;margin:0 auto .7rem;object-fit:contain;border-radius:6px}
 .team-chip span{display:block;font-size:.72rem;font-weight:800;letter-spacing:.1em;
   text-transform:uppercase;color:#dbe3f0}
@@ -234,13 +288,17 @@ h1,h2,h3{margin:0;line-height:1.05}
   letter-spacing:.03em;max-width:26ch}
 .site-footer h3{font-size:.74rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
   color:#fff;margin-bottom:1rem;padding-bottom:.6rem;
-  border-bottom:1px solid rgba(196,144,15,.4)}
+  border-bottom:1px solid rgba(190,135,64,.4)}
 .f-links a,.f-links p{display:block;margin:.45rem 0;color:#9fabbf;font-size:.9rem;transition:.2s}
 .f-links a:hover{color:var(--gold-lt);transform:translateX(3px)}
 .soc{display:flex;align-items:center;gap:.7rem;margin:.6rem 0;color:#9fabbf;
   font-size:.9rem;font-weight:600;transition:.2s}
-.soc svg{width:22px;height:22px;fill:currentColor;flex:0 0 auto}
+.soc svg{width:22px;height:22px;fill:currentColor;flex:0 0 auto;transition:transform .2s}
 .soc:hover{color:var(--gold-lt)}
+.soc:hover svg{transform:scale(1.12)}
+/* each network keeps its own mark colour — the Instagram glyph carries an SVG gradient */
+.soc-fb svg{fill:#1877f2}
+.soc-yt svg{fill:#ff0000}
 .handle{margin:1.1rem 0 0;color:#5f6c81;font-size:.8rem;letter-spacing:.1em}
 .footer-bar{border-top:1px solid rgba(255,255,255,.1);padding:1.1rem 0}
 .footer-bar-in{display:flex;align-items:center;justify-content:space-between;
@@ -251,18 +309,29 @@ h1,h2,h3{margin:0;line-height:1.05}
 .hash{color:var(--gold);font-weight:800;margin-left:.4rem}
 
 /* ---------- responsive ---------- */
+@media (max-width:1240px){
+  /* the socials are the first thing to give when the menu row runs out of room */
+  .nav{gap:1.15rem}
+  .nav-social{padding-left:.85rem;gap:.4rem}
+}
 @media (max-width:1020px){
   .marquee-grid{grid-template-columns:1fr;max-width:640px;margin-inline:auto}
   .footer-grid{grid-template-columns:1fr 1fr}
+  .map-block{grid-template-columns:1fr;max-width:680px;margin-inline:auto}
+  .map-copy .section-title{text-align:center}
+  .map-copy .section-title::after{margin-inline:auto}
+  .map-copy p{text-align:center}
 }
-@media (max-width:860px){
+@media (max-width:960px){
   .nav{
-    position:fixed;inset:var(--hdr) 0 auto 0;flex-direction:column;gap:0;
-    background:rgba(5,7,14,.97);border-bottom:1px solid rgba(196,144,15,.3);
+    position:fixed;inset:var(--hdr) 0 auto 0;flex-direction:column;align-items:stretch;gap:0;
+    background:var(--bg);border-bottom:1px solid rgba(190,135,64,.3);
     padding:.5rem 1.5rem 1.2rem;display:none;
   }
   .nav.open{display:flex}
-  .nav a{padding:.85rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav > a{padding:.85rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav-social{justify-content:center;gap:1.5rem;padding:1.1rem 0 .2rem;border-left:0}
+  .nav-social .soc svg{width:26px;height:26px}
   .nav-toggle{display:block;order:3}
   .header-marks{margin-left:auto;order:2;padding-left:1rem}
   .header-marks img{height:32px}
@@ -277,16 +346,18 @@ h1,h2,h3{margin:0;line-height:1.05}
   .slider-btn.prev{left:.6rem}
   .slider-btn.next{right:.6rem}
   .icon-grid{grid-template-columns:1fr}
-  .squad-card{flex:1 1 calc(50% - .6rem)}
+  /* the roster is an odd number, so cap the width or the last card stretches full bleed */
+  .squad-card{flex:1 1 calc(50% - .6rem);max-width:calc(50% - .6rem)}
   .panel-body{grid-template-columns:1fr;gap:1.4rem}
   .stat-panel{gap:1.4rem;padding:1.5rem}
   .stats{border-left:0;padding-left:0;border-top:1px solid rgba(255,255,255,.14);padding-top:1rem}
   .stat-panel .ghost{font-size:7rem}
   .footer-grid{grid-template-columns:1fr}
   .teams-head img{height:42px}
-  /* the map is a wide deck graphic — let it scroll rather than shrink to unreadable */
-  .map-frame{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .map-frame img{width:760px;max-width:none;height:auto}
+  /* pin labels would collide at this width, so they sit under their dot instead */
+  .pin span{left:50%;right:auto;top:14px;transform:translateX(-50%);letter-spacing:.06em;
+    padding:.22em .5em}
+  .pin-left span{left:50%;right:auto}
   .footer-bar-in{justify-content:center;text-align:center}
 }
 

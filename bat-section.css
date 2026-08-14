@@ -130,9 +130,10 @@
 
 .mf1-security-section{
   /* the lockbox glow/ring read these — swap Dropbox blue for gold */
-  --dbx-blue-rgb:196,144,15;
+  --dbx-blue-rgb:190,135,64;
   --mclaren-f1--dbx-blue:var(--gold);
-  background-color:var(--navy);
+  /* black behind the panel, so the white sheet reads as a lit exhibit */
+  background-color:#000;
   border-top:3px solid var(--gold);
   border-bottom:3px solid var(--gold);
   padding:clamp(2.5rem,5vw,4.5rem) var(--body-margin);
@@ -141,7 +142,7 @@
 /* the sheet becomes a panel rather than a full-bleed white band */
 .mf1-security-layout{
   background:#fff;
-  border:1px solid rgba(196,144,15,.55);
+  border:1px solid rgba(190,135,64,.55);
   border-radius:18px;
   overflow:clip;
   box-shadow:0 30px 70px rgba(0,0,0,.55);
@@ -152,7 +153,7 @@
 .mf1-security-content-container{padding-top:clamp(1.75rem,7vw,7rem)}
 
 .mf1-h2{
-  font-family:'Archivo',system-ui,sans-serif;font-weight:800;
+  font-family:'Montserrat',system-ui,sans-serif;font-weight:800;
   letter-spacing:-.01em;
 }
 .mf1-security-text-area::before{
@@ -161,7 +162,7 @@
   letter-spacing:.34em;text-transform:uppercase;
 }
 
-.mf1-security-feature::before{border-color:rgba(196,144,15,.45)}
+.mf1-security-feature::before{border-color:rgba(190,135,64,.45)}
 .mf1-security-page-indicator{color:var(--gold-deep)}
 
 /* --- mobile ---
@@ -182,7 +183,7 @@
     margin-bottom:14px;white-space:nowrap;
     color:var(--gold-deep);font-size:.66rem;font-weight:800;
     letter-spacing:.2em;text-transform:uppercase;
-    background:#fff;border:1px solid rgba(196,144,15,.45);
+    background:#fff;border:1px solid rgba(190,135,64,.45);
     border-radius:999px;padding:.4rem .85rem;
   }
 }
