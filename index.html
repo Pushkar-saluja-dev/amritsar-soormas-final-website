@@ -1120,19 +1120,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- ============ 7. TEAMS / MAP ============ -->
 <section class="teams-sec" id="teams">
-  <!-- the supplied creative carries its own logos, headline and copy — it runs full
-       bleed like the mascot board and the hero hoardings -->
-  <img class="teams-creative" src="assets/teams-map.jpg" width="2400" height="1697"
-       alt="Teams — the Sher-e-Punjab T20 League sides represent Amritsar, Jalandhar, Ludhiana, Mohali, Fazilka and Bathinda"
-       loading="lazy">
-  <div class="wrap">
-    <div class="team-logos">
-      <div class="team-chip is-home"><img src="assets/logo-soormas.png" alt="Amritsar Soormas"><span>Amritsar Soormas</span></div>
-      <div class="team-chip"><img src="assets/team-jalandhar-warriors.png" alt="Jalandhar Warriors"><span>Jalandhar Warriors</span></div>
-      <div class="team-chip"><img src="assets/team-ludhiana-lions.png" alt="Ludhiana Lions"><span>Ludhiana Lions</span></div>
-      <div class="team-chip"><img src="assets/team-mohali-kings.png" alt="Mohali Kings"><span>Mohali Kings</span></div>
-      <div class="team-chip"><img src="assets/team-fazilka-falcons.png" alt="Fazilka Falcons"><span>Fazilka Falcons</span></div>
-      <div class="team-chip"><img src="assets/team-bathinda-royals.png" alt="Bathinda Royals"><span>Bathinda Royals</span></div>
+  <!-- the deck's TEAMS board, rebuilt in markup so the map can answer a click: picking a
+       side cross-fades to that side's district frame -->
+  <div class="teams-board">
+    <img class="board-mark board-mark-pca" src="assets/logo-pca.png" alt="Punjab Cricket Association">
+    <div class="board-mark board-mark-sep">
+      <img src="assets/logo-sher-e-punjab.png" alt="">
+      <span>Sher-e-<br>Punjab<br><em>T20 League</em></span>
+    </div>
+
+    <div class="teams-board-in">
+      <div class="teams-copy">
+        <h2>Teams</h2>
+        <p>The teams shall represent various regions of Punjab thus taking the game to every
+           nook &amp; corner of the region having its true representation.</p>
+        <img class="board-crest" src="assets/logo-soormas.png" alt="Amritsar Soormas">
+      </div>
+
+      <div class="teams-map" id="teamsMap">
+        <img class="map-frame is-on" data-team="amritsar"  src="assets/maps/amritsar.webp"  width="1500" height="1125" alt="Punjab with the Amritsar district highlighted" loading="lazy">
+        <img class="map-frame"       data-team="jalandhar" src="assets/maps/jalandhar.webp" width="1500" height="1125" alt="Punjab with the Jalandhar district highlighted" loading="lazy">
+        <img class="map-frame"       data-team="ludhiana"  src="assets/maps/ludhiana.webp"  width="1500" height="1125" alt="Punjab with the Ludhiana district highlighted" loading="lazy">
+        <img class="map-frame"       data-team="mohali"    src="assets/maps/mohali.webp"    width="1500" height="1125" alt="Punjab with the Mohali district highlighted" loading="lazy">
+        <img class="map-frame"       data-team="fazilka"   src="assets/maps/fazilka.webp"   width="1500" height="1125" alt="Punjab with the Fazilka district highlighted" loading="lazy">
+        <img class="map-frame"       data-team="bathinda"  src="assets/maps/bathinda.webp"  width="1500" height="1125" alt="Punjab with the Bathinda district highlighted" loading="lazy">
+      </div>
+    </div>
+
+    <!-- the picker lives on the board itself, under the map it drives -->
+    <div class="team-logos" id="teamPicker">
+      <button type="button" class="team-chip is-home is-active" data-team="amritsar" aria-pressed="true"><img src="assets/logo-soormas.png" alt=""><span>Amritsar Soormas</span></button>
+      <button type="button" class="team-chip" data-team="jalandhar" aria-pressed="false"><img src="assets/team-jalandhar-warriors.png" alt=""><span>Jalandhar Warriors</span></button>
+      <button type="button" class="team-chip" data-team="ludhiana" aria-pressed="false"><img src="assets/team-ludhiana-lions.png" alt=""><span>Ludhiana Lions</span></button>
+      <button type="button" class="team-chip" data-team="mohali" aria-pressed="false"><img src="assets/team-mohali-kings.png" alt=""><span>Mohali Kings</span></button>
+      <button type="button" class="team-chip" data-team="fazilka" aria-pressed="false"><img src="assets/team-fazilka-falcons.png" alt=""><span>Fazilka Falcons</span></button>
+      <button type="button" class="team-chip" data-team="bathinda" aria-pressed="false"><img src="assets/team-bathinda-royals.png" alt=""><span>Bathinda Royals</span></button>
     </div>
   </div>
 </section>

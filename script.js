@@ -70,4 +70,57 @@
       }
     });
   }
+
+  // teams board — the map cycles through the six districts on its own, and a chip click
+  // jumps straight to that side and restarts the clock
+  var picker = document.getElementById('teamPicker');
+  var teamsMap = document.getElementById('teamsMap');
+  if (picker && teamsMap) {
+    var chips = Array.prototype.slice.call(picker.querySelectorAll('.team-chip'));
+    var frames = Array.prototype.slice.call(teamsMap.querySelectorAll('.map-frame'));
+    var HOLD = 4000;
+    var current = 0;
+    var timer = null;
+    var inView = !('IntersectionObserver' in window);
+
+    function show(i) {
+      current = (i + chips.length) % chips.length;
+      chips.forEach(function (c, n) {
+        c.classList.toggle('is-active', n === current);
+        c.setAttribute('aria-pressed', n === current);
+      });
+      frames.forEach(function (f, n) {
+        f.classList.toggle('is-on', n === current);
+      });
+    }
+
+    function play() {
+      stop();
+      if (!inView || document.hidden) return;
+      timer = setInterval(function () { show(current + 1); }, HOLD);
+    }
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    picker.addEventListener('click', function (e) {
+      var chip = e.target.closest('.team-chip');
+      if (!chip) return;
+      show(chips.indexOf(chip));
+      play();            // the click resets the hold so the pick is not cut short
+    });
+
+    // only run the loop while the board is on screen
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        inView ? play() : stop();
+      }, { threshold: .25 }).observe(teamsMap);
+    } else {
+      play();
+    }
+    document.addEventListener('visibilitychange', function () {
+      document.hidden ? stop() : play();
+    });
+  }
 })();

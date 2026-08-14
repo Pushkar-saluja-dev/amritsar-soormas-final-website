@@ -223,24 +223,99 @@ h1,h2,h3{margin:0;line-height:1.05}
 .mascot-sec img{width:100%;height:auto}
 
 /* ---------- 7. teams / map ---------- */
-.teams-sec{background:var(--navy-map);padding-bottom:clamp(3rem,6vw,4.5rem)}
-/* the supplied slide is a finished creative — it scales with the viewport the same way
-   the mascot board and the hero hoardings do, and brings its own crimson frame */
-.teams-creative{width:100%;height:auto}
+/* the deck's TEAMS board, re-cut in the brand kit: brand navy, crimson frame, Headsome
+   display type and gold — the map is a stack of district frames that cross-fade */
+.teams-sec{background:var(--bg)}
+.teams-board{
+  position:relative;background:linear-gradient(160deg,var(--navy),#161f33);
+  border-top:6px solid var(--crimson);border-bottom:6px solid var(--crimson);
+  padding:clamp(1.4rem,3.2vw,2.8rem) clamp(1.2rem,4vw,3.4rem) clamp(2rem,4vw,3rem);
+}
+.teams-board::before,.teams-board::after{
+  content:"";position:absolute;top:0;bottom:0;width:clamp(8px,1vw,14px);
+}
+.teams-board::before{left:0;background:linear-gradient(180deg,var(--crimson),#7b0b0a)}
+.teams-board::after{right:0;background:linear-gradient(180deg,var(--gold),var(--gold-deep))}
+
+.board-mark{
+  position:absolute;top:clamp(1.1rem,2.6vw,2rem);height:clamp(42px,5.2vw,72px);width:auto;
+  background:#fff;border-radius:8px;padding:.5rem .8rem;object-fit:contain;
+}
+.board-mark-pca{left:clamp(1.6rem,4.5vw,3.6rem)}
+/* the league mark ships as a crest only, so the wordmark beside it is set in type */
+.board-mark-sep{right:clamp(1.6rem,4.5vw,3.6rem);display:flex;align-items:center;gap:.55rem}
+.board-mark-sep img{height:100%;width:auto;object-fit:contain}
+.board-mark-sep span{
+  color:var(--navy);font-size:clamp(.52rem,.82vw,.8rem);font-weight:900;line-height:1.12;
+  letter-spacing:.02em;text-transform:uppercase;
+}
+.board-mark-sep em{font-style:normal;font-weight:700;font-size:.86em}
+.board-crest{display:block;width:clamp(96px,11vw,168px);height:auto;margin:clamp(1.4rem,3vw,2.4rem) 0 0}
+
+.teams-board-in{
+  max-width:1440px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  align-items:center;gap:clamp(1rem,3vw,2.5rem);padding-top:clamp(2.6rem,6vw,4.6rem);
+}
+.teams-copy h2{
+  font-family:var(--display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(2.4rem,5.4vw,4.4rem);line-height:1;letter-spacing:.03em;
+  color:var(--gold-lt);margin:0 0 1.4rem;text-shadow:0 4px 18px rgba(0,0,0,.5);
+}
+.teams-copy h2::after{
+  content:"";display:block;width:clamp(150px,17vw,290px);height:3px;
+  background:var(--gold);margin-top:.7rem;
+}
+.teams-copy p{
+  margin:0;color:var(--text);font-weight:600;max-width:34ch;
+  font-size:clamp(.95rem,1.4vw,1.35rem);line-height:1.5;
+}
+
+/* the frames are pre-aligned to one canvas, so stacking them makes the fade land on the
+   same Punjab every time */
+.teams-map{position:relative;aspect-ratio:4/3}
+.map-frame{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  opacity:0;transition:opacity .55s ease;
+}
+.map-frame.is-on{opacity:1}
+@media (prefers-reduced-motion:reduce){.map-frame{transition:none}}
+
 .team-logos{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:1rem;margin-top:2rem;
+  max-width:1440px;margin:clamp(1.6rem,3vw,2.6rem) auto 0;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;
 }
 .team-chip{
   background:rgba(5,7,14,.45);border:1px solid rgba(255,255,255,.16);border-radius:10px;
   padding:1rem .75rem;text-align:center;transition:.25s;
+  font:inherit;color:inherit;cursor:pointer;
 }
 .team-chip:hover{border-color:var(--gold);transform:translateY(-4px)}
-.team-chip.is-home{border-color:var(--gold);background:rgba(190,135,64,.1)}
+.team-chip:focus-visible{outline:3px solid var(--gold-lt);outline-offset:3px}
+.team-chip.is-home{border-color:rgba(190,135,64,.55)}
+.team-chip.is-active{border-color:var(--gold);background:rgba(190,135,64,.16);
+  box-shadow:0 0 0 1px rgba(190,135,64,.35),0 10px 26px rgba(0,0,0,.35)}
 .team-chip img{height:74px;width:auto;margin:0 auto .7rem;object-fit:contain;border-radius:6px}
 .team-chip span{display:block;font-size:.72rem;font-weight:800;letter-spacing:.1em;
   text-transform:uppercase;color:#dbe3f0}
-.team-chip.is-home span{color:var(--gold-lt)}
+.team-chip.is-active span{color:var(--gold-lt)}
+
+@media (max-width:820px){
+  .teams-board-in{grid-template-columns:1fr;padding-top:clamp(3.4rem,12vw,5rem)}
+  .teams-copy p{max-width:none}
+  .board-crest{margin:1.2rem auto 0}
+  .teams-board{padding-bottom:clamp(1.6rem,5vw,2.4rem)}
+  /* small screens: the marks and the chips shrink so six of them still read as a row */
+  .board-mark{height:clamp(30px,8vw,44px);padding:.35rem .5rem;border-radius:6px}
+  .board-mark-sep{gap:.4rem}
+  .team-logos{grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem}
+  .team-chip{padding:.6rem .35rem;border-radius:8px}
+  .team-chip img{height:44px;margin-bottom:.45rem}
+  .team-chip span{font-size:.54rem;letter-spacing:.06em}
+}
+@media (max-width:420px){
+  .team-chip img{height:36px}
+  .team-chip span{font-size:.5rem}
+}
 
 /* ---------- footer ---------- */
 .site-footer{background:#04060c;border-top:3px solid var(--gold);padding-top:3.2rem}
