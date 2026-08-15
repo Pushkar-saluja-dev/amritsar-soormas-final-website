@@ -83,6 +83,32 @@
     var timer = null;
     var inView = !('IntersectionObserver' in window);
 
+    // the captain card rides the same pick as the map — name, side and portrait, with a
+    // clean "to be announced" state for the sides whose captain is not confirmed yet
+    var capCard = document.getElementById('capCard');
+    var capPic = document.getElementById('capPic');
+    var capName = document.getElementById('capName');
+    var capTeam = document.getElementById('capTeam');
+
+    function paintCaptain(chip) {
+      if (!capCard) return;
+      var name = chip.getAttribute('data-captain') || '';
+      var pic = chip.getAttribute('data-captain-pic') || '';
+      var team = chip.querySelector('span').textContent;
+      capName.textContent = name || 'To be announced';
+      capTeam.textContent = team;
+      capPic.src = pic || chip.querySelector('img').getAttribute('src');
+      capPic.alt = pic ? name + ', captain of ' + team : '';
+      // the card parks against the callout the lit frame draws, so it moves with the pick
+      capCard.setAttribute('data-team', chip.getAttribute('data-team'));
+      capCard.classList.toggle('is-tba', !name);    // no captain named yet
+      capCard.classList.toggle('is-nopic', !pic);   // named, but no portrait to hand
+      // re-adding the class replays the slide-in for every switch
+      capCard.classList.remove('is-in');
+      void capCard.offsetWidth;
+      capCard.classList.add('is-in');
+    }
+
     function show(i) {
       current = (i + chips.length) % chips.length;
       chips.forEach(function (c, n) {
@@ -99,6 +125,7 @@
       frames.forEach(function (f, n) {
         f.classList.toggle('is-on', n === current);
       });
+      paintCaptain(chips[current]);
     }
 
     function play() {

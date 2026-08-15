@@ -296,6 +296,60 @@ h1,h2,h3{margin:0;line-height:1.05}
 }
 .map-frame.is-on{opacity:1;transform:scale(1)}
 
+/* the captain of the lit district, parked against that district's own callout — every
+   frame draws its city name in a different place, so each side carries its own anchor */
+.cap-card{
+  position:absolute;z-index:2;left:var(--cap-x);top:var(--cap-y);
+  width:clamp(184px,22vw,244px);margin:0;
+  display:grid;grid-template-columns:52px minmax(0,1fr);align-items:center;
+  gap:.6rem;padding:.5rem .7rem .55rem;
+  background:linear-gradient(165deg,rgba(24,33,54,.94),rgba(5,7,14,.94));
+  border:1px solid rgba(190,135,64,.55);border-radius:12px;
+  box-shadow:0 22px 44px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.12);
+  backdrop-filter:blur(6px);
+}
+.cap-card::before{
+  content:"";position:absolute;left:.7rem;right:.7rem;top:0;height:3px;
+  background:linear-gradient(90deg,var(--crimson),var(--gold),var(--gold-lt));
+}
+/* anchors read off the district frames themselves: each pair sits clear of the artwork
+   and hugs the yellow city label that frame draws */
+.cap-card[data-team="amritsar"] {--cap-x:1%;--cap-y:43%}
+.cap-card[data-team="jalandhar"]{--cap-x:66%;--cap-y:31%}
+.cap-card[data-team="ludhiana"] {--cap-x:66%;--cap-y:19%}
+.cap-card[data-team="mohali"]   {--cap-x:71%;--cap-y:71%}
+.cap-card[data-team="fazilka"]  {--cap-x:0%;--cap-y:47%}
+.cap-card[data-team="bathinda"] {--cap-x:0%;--cap-y:88%}
+
+.cap-card.is-in{animation:cap-in .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes cap-in{
+  from{opacity:0;transform:translateY(10px) scale(.96)}
+  to{opacity:1;transform:none}
+}
+
+.cap-pic-wrap{
+  aspect-ratio:1/1;border-radius:8px;overflow:hidden;
+  background:radial-gradient(120% 100% at 50% 15%,rgba(190,135,64,.34),rgba(5,7,14,.85));
+  box-shadow:inset 0 0 0 1px rgba(190,135,64,.3);
+}
+.cap-pic{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block}
+/* no portrait to hand — the side's crest sits in the frame instead of a cropped stand-in */
+.cap-card.is-nopic .cap-pic{object-fit:contain;object-position:50% 50%;padding:14%;opacity:.92}
+
+.cap-meta{display:grid;gap:.15rem;text-align:left}
+.cap-role{
+  font-size:.56rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold-lt);
+}
+.cap-name{
+  font-size:clamp(.76rem,.95vw,.94rem);font-weight:900;line-height:1.15;color:#fff;
+  text-transform:uppercase;letter-spacing:.01em;
+}
+.cap-card.is-tba .cap-name{color:#c3ccdc;font-weight:700;text-transform:none;font-style:italic}
+.cap-team{
+  font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#93a1b8;
+}
+
 .team-logos{
   max-width:1440px;margin:clamp(1.6rem,3vw,2.6rem) auto 0;
   display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;
@@ -338,6 +392,7 @@ h1,h2,h3{margin:0;line-height:1.05}
   .map-frame{transition:none;transform:none}
   .team-chip,.team-chip img{transition:none}
   .team-chip.is-active::after{animation:none;transform:scaleX(1)}
+  .cap-card.is-in{animation:none}
 }
 
 @media (max-width:820px){
@@ -353,6 +408,22 @@ h1,h2,h3{margin:0;line-height:1.05}
   .team-chip{padding:.6rem .35rem;border-radius:8px}
   .team-chip img{height:44px;margin-bottom:.45rem}
   .team-chip span{font-size:.54rem;letter-spacing:.06em}
+  /* the card tucks inside the map box once the board stacks, so nothing hangs off-screen */
+  /* no gutter once the board stacks — the card drops below the map as a row, and the map
+     reserves the height for it */
+  .teams-map{margin-bottom:96px}
+  .cap-card{
+    left:50%;top:auto;bottom:0;transform:translate(-50%,calc(100% + 10px));
+    width:min(340px,94%);grid-template-columns:64px minmax(0,1fr);
+    padding:.55rem .7rem .6rem;gap:.7rem;
+  }
+  .cap-card.is-in{animation:cap-in-row .45s cubic-bezier(.16,1,.3,1) both}
+  @keyframes cap-in-row{
+    from{opacity:0;transform:translate(-50%,calc(100% + 22px)) scale(.97)}
+    to{opacity:1;transform:translate(-50%,calc(100% + 10px))}
+  }
+  .cap-name{font-size:.82rem}
+  .cap-role,.cap-team{font-size:.52rem;letter-spacing:.12em}
 }
 @media (max-width:420px){
   .team-chip img{height:36px}
@@ -387,6 +458,8 @@ h1,h2,h3{margin:0;line-height:1.05}
 .f-marks img{height:44px;width:auto;border-radius:4px}
 .footer-bar p{margin:0;color:#6b7788;font-size:.78rem}
 .hash{color:var(--gold);font-weight:800;margin-left:.4rem}
+/* attribution the Commons licences on the two captain portraits ask for */
+.footer-bar p.f-credit{flex-basis:100%;color:#4f5b6b;font-size:.68rem;line-height:1.5}
 
 /* ---------- responsive ---------- */
 @media (max-width:1240px){
