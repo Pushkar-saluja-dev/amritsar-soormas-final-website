@@ -36,7 +36,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><defs><radialGradient id="ig-nav" cx="30%" cy="107%" r="150%"><stop offset="0" stop-color="#fdf497"/><stop offset=".05" stop-color="#fdf497"/><stop offset=".45" stop-color="#fd5949"/><stop offset=".6" stop-color="#d6249f"/><stop offset=".9" stop-color="#285aeb"/></radialGradient></defs><rect width="24" height="24" rx="6" fill="url(#ig-nav)"/><path fill="#fff" fill-rule="evenodd" d="M8.8 4.2h6.4a4.6 4.6 0 0 1 4.6 4.6v6.4a4.6 4.6 0 0 1-4.6 4.6H8.8a4.6 4.6 0 0 1-4.6-4.6V8.8a4.6 4.6 0 0 1 4.6-4.6ZM9.3 5.9h5.4a3.4 3.4 0 0 1 3.4 3.4v5.4a3.4 3.4 0 0 1-3.4 3.4H9.3a3.4 3.4 0 0 1-3.4-3.4V9.3a3.4 3.4 0 0 1 3.4-3.4ZM12 7.9a4.1 4.1 0 1 0 0 8.2 4.1 4.1 0 0 0 0-8.2ZM12 9.6a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8ZM16.6 6.25a1.15 1.15 0 1 0 0 2.3 1.15 1.15 0 0 0 0-2.3Z"/></svg>
         <span class="soc-label">Instagram</span>
       </a>
-      <a class="soc soc-fb" href="https://www.facebook.com/amritsarsoormas" target="_blank" rel="noopener" aria-label="Amritsar Soormas on Facebook">
+      <a class="soc soc-fb" href="https://www.facebook.com/people/Amritsar-Soormas/61592861263160/" target="_blank" rel="noopener" aria-label="Amritsar Soormas on Facebook">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.5-3.89 3.77-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12Z"/></svg>
         <span class="soc-label">Facebook</span>
       </a>
@@ -372,8 +372,9 @@
         preserveDrawingBuffer: false
     });
 
-    // Set clear color to white
-    securityGl.clearColor(1.0, 1.0, 1.0, 1.0);
+    // Clear to the artwork's own navy field (#263145) so the frame before the
+    // textures land matches the panel instead of flashing white
+    securityGl.clearColor(0.149, 0.192, 0.271, 1.0);
     securityGl.clear(securityGl.COLOR_BUFFER_BIT);
 
     // Add visibility pitching
@@ -950,9 +951,26 @@ document.addEventListener("DOMContentLoaded", () => {
     // Get the security graphic container
     const securityGraphic = document.getElementById("security-graphic");
 
+    // Drive the spotlight, the page dots and the anchor state from one position
+    // value. 0/1/2 sit on the three hotspots; anything between travels along the bat.
+    const applyActivePosition = (activePosition) => {
+        window.setSecurityActivePositionIndex(activePosition, true);
+
+        securityPageIndicators.forEach((indicator, i) => {
+          indicator.style.opacity = Math.abs(activePosition - i) < 0.5 ? "1" : "0.25";
+        });
+        lockboxes.forEach((indicator, i) => {
+          indicator.dataset.active = Math.abs(activePosition - i) < 0.5;
+        });
+        unlockAnchorLock(Math.floor(activePosition + 0.5));
+    };
+
     // Track scroll position
     const handleScroll = () => {
         if (isLargeScreen) return;
+        // The strip no longer overflows on phones — the whole bat is in frame and the
+        // cycle below owns the position. Nothing to read off a scroll that can't happen.
+        if (securityGraphic.scrollWidth <= securityGraphic.clientWidth + 1) return;
 
         // Get container bounds
         const containerBounds = securityGraphic.getBoundingClientRect();
@@ -998,29 +1016,92 @@ document.addEventListener("DOMContentLoaded", () => {
             lerpValue = startIndex + 1 + t;
         }
         
-        const activePosition = lerpValue - 1;
-
-        window.setSecurityActivePositionIndex(activePosition, true);
-        
-        securityPageIndicators.forEach((indicator, i) => {
-          indicator.style.opacity = Math.abs(activePosition - i) < 0.5 ? "1" : "0.25";
-        });
-        lockboxes.forEach((indicator, i) => {
-          indicator.dataset.active = Math.abs(activePosition - i) < 0.5;
-        });
-        unlockAnchorLock(Math.floor(activePosition + 0.5));
+        applyActivePosition(lerpValue - 1);
     };
 
     // Add scroll listener to security graphic
     handleScroll();
-    
+
     securityGraphic.addEventListener("scroll", handleScroll);
-    
+
     let resizeTimeout;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(handleScroll, 150);
     });
+
+    /* ---- phones and tablets: the bat plays itself ----
+       The swipe strip is gone, so the three reveals walk the bat on a timer and each
+       hotspot is also a tap target. Desktop is untouched: it still runs off hover. */
+    const HOLD_MS = 2200;      // how long a hotspot stays lit
+    const TRAVEL_MS = 700;     // spotlight glide between two hotspots
+    const RESUME_MS = 6000;    // pause after a tap before the cycle picks up again
+
+    const smallScreens = window.matchMedia('(max-width: 991px)');
+    let position = 0;
+    let travelFrame = null;
+    let holdTimer = null;
+    let isCycling = false;
+
+    const travelTo = (target) => {
+        cancelAnimationFrame(travelFrame);
+        const from = position;
+        const start = performance.now();
+        const step = (now) => {
+            const t = Math.min(1, (now - start) / TRAVEL_MS);
+            const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            position = from + (target - from) * eased;
+            applyActivePosition(position);
+            if (t < 1) travelFrame = requestAnimationFrame(step);
+        };
+        travelFrame = requestAnimationFrame(step);
+    };
+
+    const queueNext = (delay = HOLD_MS) => {
+        clearTimeout(holdTimer);
+        holdTimer = setTimeout(() => {
+            if (!isCycling) return;
+            travelTo((Math.round(position) + 1) % 3);
+            queueNext(HOLD_MS + TRAVEL_MS);
+        }, delay);
+    };
+
+    const startCycle = () => {
+        if (isCycling || !smallScreens.matches) return;
+        isCycling = true;
+        applyActivePosition(position);
+        queueNext();
+    };
+
+    const stopCycle = () => {
+        isCycling = false;
+        clearTimeout(holdTimer);
+        cancelAnimationFrame(travelFrame);
+    };
+
+    // Tapping a hotspot jumps straight to it and holds it a beat longer than the cycle would
+    lockboxes.forEach((box, i) => {
+        box.addEventListener('click', () => {
+            if (!smallScreens.matches) return;
+            travelTo(i);
+            if (isCycling) queueNext(RESUME_MS);
+        });
+    });
+    securityPageIndicators.forEach((dot, i) => {
+        dot.style.pointerEvents = 'auto';
+        dot.addEventListener('click', () => {
+            if (!smallScreens.matches) return;
+            travelTo(i);
+            if (isCycling) queueNext(RESUME_MS);
+        });
+    });
+
+    // Only run while the section is on screen
+    new IntersectionObserver((entries) => {
+        entries.forEach((entry) => (entry.isIntersecting ? startCycle() : stopCycle()));
+    }, { threshold: 0.25 }).observe(securityGraphic);
+
+    smallScreens.addEventListener('change', (e) => (e.matches ? startCycle() : stopCycle()));
 });
 
 
@@ -1150,7 +1231,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <!-- the captain of whichever side the map is lit for, riding beside the district -->
         <figure class="cap-card" id="capCard" data-team="amritsar" aria-live="polite">
-          <div class="cap-pic-wrap"><img class="cap-pic" id="capPic" src="assets/players/abhishek-sharma.webp" alt="Abhishek Sharma, captain"></div>
+          <div class="cap-pic-wrap"><img class="cap-pic" id="capPic" src="assets/players/captain-abhishek-sharma.webp" alt="Abhishek Sharma, captain"></div>
           <figcaption class="cap-meta">
             <span class="cap-role">Captain</span>
             <strong class="cap-name" id="capName">Abhishek Sharma</strong>
@@ -1162,12 +1243,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <!-- the picker lives on the board itself, under the map it drives -->
     <div class="team-logos" id="teamPicker">
-      <button type="button" class="team-chip is-home is-active" data-team="amritsar" aria-pressed="true" data-captain="Abhishek Sharma" data-captain-pic="assets/players/abhishek-sharma.webp"><img src="assets/logo-soormas.png" alt=""><span>Amritsar Soormas</span></button>
-      <button type="button" class="team-chip" data-team="jalandhar" aria-pressed="false" data-captain="Prabhsimran Singh" data-captain-pic=""><img src="assets/team-jalandhar-warriors.webp" alt=""><span>Jalandhar Warriors</span></button>
-      <button type="button" class="team-chip" data-team="ludhiana" aria-pressed="false" data-captain="Arshdeep Singh" data-captain-pic="assets/players/arshdeep-singh.webp"><img src="assets/team-ludhiana-lions.webp" alt=""><span>Ludhiana Lions</span></button>
-      <button type="button" class="team-chip" data-team="mohali" aria-pressed="false" data-captain="Ramandeep Singh" data-captain-pic=""><img src="assets/team-mohali-kings.webp" alt=""><span>Mohali Kings</span></button>
-      <button type="button" class="team-chip" data-team="fazilka" aria-pressed="false" data-captain="Shubman Gill" data-captain-pic="assets/players/shubman-gill.webp"><img src="assets/team-fazilka-falcons.webp" alt=""><span>Fazilka Falcons</span></button>
-      <button type="button" class="team-chip" data-team="bathinda" aria-pressed="false" data-captain="Gurnoor Brar" data-captain-pic=""><img src="assets/team-bathinda-royals.webp" alt=""><span>Bathinda Royals</span></button>
+      <button type="button" class="team-chip is-home is-active" data-team="amritsar" aria-pressed="true" data-captain="Abhishek Sharma" data-captain-pic="assets/players/captain-abhishek-sharma.webp"><img src="assets/logo-soormas.png" alt=""><span>Amritsar Soormas</span></button>
+      <button type="button" class="team-chip" data-team="jalandhar" aria-pressed="false" data-captain="Prabhsimran Singh" data-captain-pic="assets/players/captain-prabhsimran-singh.webp"><img src="assets/team-jalandhar-warriors.webp" alt=""><span>Jalandhar Warriors</span></button>
+      <button type="button" class="team-chip" data-team="ludhiana" aria-pressed="false" data-captain="Arshdeep Singh" data-captain-pic="assets/players/captain-arshdeep-singh.webp"><img src="assets/team-ludhiana-lions.webp" alt=""><span>Ludhiana Lions</span></button>
+      <button type="button" class="team-chip" data-team="mohali" aria-pressed="false" data-captain="Ramandeep Singh" data-captain-pic="assets/players/captain-ramandeep-singh.webp"><img src="assets/team-mohali-kings.webp" alt=""><span>Mohali Kings</span></button>
+      <button type="button" class="team-chip" data-team="fazilka" aria-pressed="false" data-captain="Shubman Gill" data-captain-pic="assets/players/captain-shubman-gill.webp"><img src="assets/team-fazilka-falcons.webp" alt=""><span>Fazilka Falcons</span></button>
+      <button type="button" class="team-chip" data-team="bathinda" aria-pressed="false" data-captain="Gurnoor Brar" data-captain-pic="assets/players/captain-gurnoor-brar.webp"><img src="assets/team-bathinda-royals.webp" alt=""><span>Bathinda Royals</span></button>
     </div>
   </div>
 </section>
@@ -1201,7 +1282,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <svg viewBox="0 0 24 24" aria-hidden="true"><defs><radialGradient id="ig-foot" cx="30%" cy="107%" r="150%"><stop offset="0" stop-color="#fdf497"/><stop offset=".05" stop-color="#fdf497"/><stop offset=".45" stop-color="#fd5949"/><stop offset=".6" stop-color="#d6249f"/><stop offset=".9" stop-color="#285aeb"/></radialGradient></defs><rect width="24" height="24" rx="6" fill="url(#ig-foot)"/><path fill="#fff" fill-rule="evenodd" d="M8.8 4.2h6.4a4.6 4.6 0 0 1 4.6 4.6v6.4a4.6 4.6 0 0 1-4.6 4.6H8.8a4.6 4.6 0 0 1-4.6-4.6V8.8a4.6 4.6 0 0 1 4.6-4.6ZM9.3 5.9h5.4a3.4 3.4 0 0 1 3.4 3.4v5.4a3.4 3.4 0 0 1-3.4 3.4H9.3a3.4 3.4 0 0 1-3.4-3.4V9.3a3.4 3.4 0 0 1 3.4-3.4ZM12 7.9a4.1 4.1 0 1 0 0 8.2 4.1 4.1 0 0 0 0-8.2ZM12 9.6a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8ZM16.6 6.25a1.15 1.15 0 1 0 0 2.3 1.15 1.15 0 0 0 0-2.3Z"/></svg>
         <span>Instagram</span>
       </a>
-      <a class="soc soc-fb" href="https://www.facebook.com/amritsarsoormas" target="_blank" rel="noopener">
+      <a class="soc soc-fb" href="https://www.facebook.com/people/Amritsar-Soormas/61592861263160/" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.5-3.89 3.77-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12Z"/></svg>
         <span>Facebook</span>
       </a>
@@ -1219,8 +1300,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <img src="assets/logo-pca.png" alt="Punjab Cricket Association">
       </div>
       <p>&copy; 2026 Amritsar Soormas. All rights reserved. <span class="hash">#maivisoorma</span></p>
-      <p class="f-credit">Captain portraits of Shubman Gill (Bollywood Hungama, CC BY 3.0) and
-         Arshdeep Singh (Storm machine, CC BY-SA 4.0) via Wikimedia Commons.</p>
     </div>
   </div>
 </footer>

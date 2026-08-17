@@ -1,4 +1,12 @@
 /* ===========================================================
+   TEMPORARILY HIDDEN — the section is parked, not removed. Everything below still
+   builds and runs; deleting these three rules brings it straight back, along with
+   its nav and footer links.
+   =========================================================== */
+#bat{display:none}
+a[href="#bat"]{display:none}
+
+/* ===========================================================
    "Every Soorma carries more than a bat" section.
    Lifted verbatim from the experiment build (Desktop/expiremen):
    rules from dash.css + the :root layout/colour variables it depends on.
@@ -118,34 +126,66 @@
 /* ===========================================================
    Theme overrides — everything above this line is the copy.
 
-   The canvas itself is left completely alone: both textures are the original
-   artwork and the shader is unmodified, so the reveal animation and the colours
-   of the splice are exactly as drawn. Anything that recolours the sheet also
-   changes the reveal, because the shader sizes its spotlight mask from the
-   artwork's own brightness.
+   The artwork is now drawn on the Soormas navy (#263145) rather than white paper,
+   so the panel, both edge scrims and the WebGL clear colour all have to sit on
+   that exact value or the canvas shows a seam where it overhangs the panel.
 
-   So the sheet stays a white spec sheet and the theming goes around it — it sits
-   as a framed panel on the Soormas navy, with the blue accents swapped for gold.
+   The reveal itself is untouched — the shader is the original, and the active
+   texture carries an alpha cut to the bat so the splice stays on the bat instead
+   of blooming across the field. See tools/theme-bat-textures.js.
    =========================================================== */
+
+:root{ --bat-field:#263145; }
 
 .mf1-security-section{
   /* the lockbox glow/ring read these — swap Dropbox blue for gold */
   --dbx-blue-rgb:190,135,64;
   --mclaren-f1--dbx-blue:var(--gold);
-  /* black behind the panel, so the white sheet reads as a lit exhibit */
   background-color:#000;
   border-top:3px solid var(--gold);
   border-bottom:3px solid var(--gold);
   padding:clamp(2.5rem,5vw,4.5rem) var(--body-margin);
 }
 
-/* the sheet becomes a panel rather than a full-bleed white band */
+/* the sheet becomes a panel rather than a full-bleed band.
+   No outline: a 1px gold hairline at any alpha low enough to be tasteful
+   anti-aliases against the navy and reads as a pale grey edge, not gold. The navy
+   against the black frame already draws the panel, and the shadow lifts it. */
 .mf1-security-layout{
-  background:#fff;
-  border:1px solid rgba(190,135,64,.55);
+  background:var(--bat-field);
   border-radius:18px;
   overflow:clip;
   box-shadow:0 30px 70px rgba(0,0,0,.55);
+}
+
+/* the scrims exist to fade the canvas out where it overhangs the panel; they were
+   painted in white paper */
+.mf1-security-canvas-scrim-right{background-image:linear-gradient(270deg,var(--bat-field),rgba(38,49,69,.5) 70%,rgba(38,49,69,0))}
+.mf1-security-canvas-scrim-left{background-image:linear-gradient(90deg,var(--bat-field),rgba(38,49,69,.5) 70%,rgba(38,49,69,0))}
+.mf1-security-canvas-scrim-bottom{background-image:linear-gradient(rgba(38,49,69,0),rgba(38,49,69,.5) 30%,var(--bat-field))}
+.mf1-security-text-area-scrim{background-image:linear-gradient(var(--bat-field),rgba(38,49,69,.5) 60%,rgba(38,49,69,0))}
+
+/* the locks are gone. The boxes stay as the hit targets the hover and tap handlers
+   are bound to — they just no longer draw anything. */
+.mf1-anchor-lockbox-outline,
+.mf1-anchor-lockbox-glow,
+.mf1-anchor-lockbox-fill,
+.mf1-anchor-lock{display:none}
+.mf1-anchor-lockbox{cursor:pointer}
+
+/* The lock used to sit on top of the resting feature card, which is scaled to 8%
+   and rotated — with the lock gone that card is exposed as a white speck on the
+   bat. It fades in with the pop instead. */
+.mf1-security-feature{
+  opacity:0;
+  transition:transform .4s cubic-bezier(.15,.5,.05,1),opacity .3s ease;
+}
+@media screen and (min-width:992px){
+  .mf1-security-feature:has(+ * .mf1-anchor-lockbox:hover),
+  .mf1-security-feature:hover{opacity:1}
+}
+@media screen and (max-width:991px){
+  .mf1-security-feature:has(+ * .mf1-anchor-lockbox[data-active="true"]){opacity:1}
 }
 
 /* the copy sat flush against the top of the panel; drop it into the empty band
@@ -155,49 +195,79 @@
 .mf1-h2{
   font-family:'Montserrat',system-ui,sans-serif;font-weight:800;
   letter-spacing:-.01em;
+  color:#fff;
 }
 .mf1-security-text-area::before{
   content:'Amritsar Soormas';
-  color:var(--gold-deep);font-size:.74rem;font-weight:800;
+  color:var(--gold-lt);font-size:.74rem;font-weight:800;
   letter-spacing:.34em;text-transform:uppercase;
 }
 
 .mf1-security-feature::before{border-color:rgba(190,135,64,.45)}
-.mf1-security-page-indicator{color:var(--gold-deep)}
+.mf1-security-page-indicator{color:var(--gold-lt)}
 
-/* --- mobile ---
-   Below 992px the graphic becomes a 300vw scroll-snap strip. The panel was left
-   tall enough for the desktop framing, so most of it was blank paper above the
-   bat, and nothing said the strip could be swiped. */
+/* --- phones and tablets ---
+   The 300vw swipe strip is gone: the canvas is one screen wide so the whole bat is
+   in frame, and the three reveals run themselves (see the cycle in index.html).
+   Each hotspot is still a tap target — the lockboxes now draw nothing but keep
+   their 64px box, widened here for thumbs. */
 @media screen and (max-width:991px){
+  .mf1-security-graphic{overflow:clip;scroll-snap-type:none}
+  .mf1-security-canvas-container{width:100%}
+  /* the bottom scrim runs ±50vw, which was harmless inside a 300vw strip but now
+     leaves the graphic horizontally scrollable */
+  .mf1-security-canvas-scrim-bottom{inset:auto 0 0}
+  .mf1-security-anchors,.mf1-security-feature-anchor{scroll-snap-align:none}
+
+  .mf1-anchor-lockbox{left:-44px;top:-44px;width:88px;height:88px}
+
   /* the copy spans the full 12 columns here, so it needs its own gutter or it
      sits flush against the panel edge */
   .mf1-security-content-container{padding-inline:1.15rem}
   .mf1-security-page-indicators{bottom:14px}
-  /* Swipe affordance, since the strip gives no other hint. It hangs off the page
-     indicators rather than the copy: those are pinned to the bottom of the panel,
-     which is the one band the feature cards never pop into. */
+  .mf1-security-page-indicator{cursor:pointer}
+  /* the dots are numbered 1,2,3 in the markup but the reveal runs 2,1,3 left to
+     right, so dot 1 used to light up for the middle hotspot */
+  #security-page-indicator-2{order:1}
+  #security-page-indicator-1{order:2}
+  #security-page-indicator-3{order:3}
+  /* the dots are the only visible handle on the reveal, so they say what they do */
   .mf1-security-page-indicators::before{
-    content:'Swipe to explore \2192';
+    content:'Tap the bat to explore';
     position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
     margin-bottom:14px;white-space:nowrap;
-    color:var(--gold-deep);font-size:.66rem;font-weight:800;
+    color:var(--gold-lt);font-size:.66rem;font-weight:800;
     letter-spacing:.2em;text-transform:uppercase;
-    background:#fff;border:1px solid rgba(190,135,64,.45);
+    background:rgba(0,0,0,.35);border:1px solid rgba(190,135,64,.45);
     border-radius:999px;padding:.4rem .85rem;
   }
 }
 
-/* Phones only. Tablets keep the copy's own sizing, which frames the strip fine at
-   that width — below ~600px the panel was mostly blank paper with the bat pushed
-   off the bottom. Raising the art any further than this collides the feature
-   cards, which pop upward out of the lockboxes, with the headline. */
+/* Tablets. The canvas square is as wide as the panel, so the bat already fills ~80%
+   of it here and needs no scaling — only a panel short enough not to leave a field
+   of empty navy above it. */
+@media screen and (min-width:601px) and (max-width:991px){
+  .mf1-security-layout{height:calc(150px + 70vw)}
+  .mf1-security-canvas-offset{bottom:-14%}
+  .mf1-security-feature{width:150px;left:-75px}
+}
+
+/* Phones. The square canvas is as tall as the panel is wide, so the panel has to be
+   roughly that tall too or the bat is cropped; the offset then drops the art clear
+   of the headline. */
 @media screen and (max-width:600px){
-  .mf1-security-layout{height:calc(270px + 80vw)}
-  .mf1-security-canvas-offset{bottom:-24%}
+  .mf1-security-layout{height:calc(95px + 86vw)}
+  /* the anchors ride inside this div, so raising it lifts the mounts and their cards
+     with the bat — it only decides where the art sits in the panel */
+  .mf1-security-canvas-offset{bottom:8%}
+  /* Scale the graphic as a whole rather than the canvas alone: the anchors and the
+     cards that hang off them are tuned against the artwork, so they have to grow
+     with it. The extra size crops the empty margin the artwork carries above the
+     bat, which is what leaves the panel looking half-empty at phone width. */
+  .mf1-security-graphic{transform:scale(1.1);transform-origin:50% 60%}
   /* the copy rides high so the headline clears the top of the popped card */
   .mf1-security-content-container{padding-top:.35rem}
-  /* cards grow upward out of the lockbox, so the tallest one (the portrait
-     manifesto) reached into the headline at 200px wide */
-  .mf1-security-feature{width:150px;left:-75px}
+  /* cards grow upward out of the lockbox, and the graphic's scale multiplies them —
+     at 150px the popped card buried the bat it is supposed to be pointing at */
+  .mf1-security-feature{width:92px;left:-46px}
 }
