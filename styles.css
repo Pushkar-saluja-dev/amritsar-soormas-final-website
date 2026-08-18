@@ -68,21 +68,18 @@ h1,h2,h3{margin:0;line-height:1.05}
 .header-marks{display:flex;align-items:center;gap:.9rem;padding-left:1.4rem;
   margin-left:.4rem;border-left:1px solid rgba(255,255,255,.16)}
 .header-marks img{height:40px;width:auto}
-.header-marks .pca{height:30px;border-radius:3px}
+.header-marks .pca{height:34px}
 .nav-toggle{display:none;background:none;border:0;cursor:pointer;padding:.4rem;margin-left:auto}
 .nav-toggle span{display:block;width:26px;height:2px;background:var(--gold-lt);margin:5px 0;transition:.25s}
 
-/* ---------- 1. hero slider ---------- */
+/* ---------- 1. hero banner ---------- */
 .hero{background:var(--bg)}
-.slider{position:relative;overflow:hidden}
-.slides{display:flex;transition:transform .6s cubic-bezier(.6,.05,.2,1)}
-.slide{flex:0 0 100%;margin:0}
-.slide img{width:100%;height:auto}
 
-/* The lead banner ships with an intentionally empty left third; the campaign line
+/* The banner ships with an intentionally empty left third; the campaign line
    sits in it on desktop. On phones that dead space is cropped away instead — see
-   the 680px block, where the line moves above the artwork. */
-.slide-lead{position:relative}
+   the 680px block, where the line drops onto the foot of the frame. */
+.slide-lead{position:relative;margin:0}
+.slide-lead img{width:100%;height:auto}
 .hero-copy{
   position:absolute;left:5.2%;top:50%;transform:translateY(-50%);z-index:2;
   font-family:var(--display);text-transform:uppercase;
@@ -96,33 +93,30 @@ h1,h2,h3{margin:0;line-height:1.05}
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;
 }
-.slider-btn{
-  position:absolute;top:50%;transform:translateY(-50%);z-index:5;
-  width:48px;height:48px;border-radius:50%;cursor:pointer;
-  border:1px solid rgba(255,255,255,.35);
-  background:rgba(5,7,14,.55);color:#fff;font-size:1.1rem;line-height:1;
-  display:grid;place-items:center;transition:.2s;backdrop-filter:blur(4px);
-}
-.slider-btn:hover{background:var(--gold);border-color:var(--gold);color:#0b0b0b}
-.slider-btn.prev{left:1.2rem}
-.slider-btn.next{right:1.2rem}
-.dots{position:absolute;left:50%;transform:translateX(-50%);bottom:1.1rem;z-index:5;
-  display:flex;gap:.55rem;padding:.5rem .8rem;border-radius:999px;
-  background:rgba(5,7,14,.5);backdrop-filter:blur(4px)}
-.dots button{width:34px;height:4px;border:0;padding:0;cursor:pointer;border-radius:2px;
-  background:rgba(255,255,255,.4);transition:.25s}
-.dots button[aria-selected="true"]{background:var(--gold-lt);width:52px}
 
-.hero-strip{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  background:linear-gradient(90deg,var(--gold-deep),var(--gold) 45%,var(--gold-lt));
-  color:#150f02;
+/* the three match facts, carried as separate cards rather than one gold band */
+.hero-facts{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;
+  padding-block:1.6rem 1.9rem;
 }
-.hero-strip div{padding:.85rem 1rem;text-align:center}
-.hero-strip div + div{border-left:1px solid rgba(0,0,0,.22)}
-.hero-strip .k{display:block;font-size:.66rem;font-weight:800;letter-spacing:.2em;
-  text-transform:uppercase;opacity:.72}
-.hero-strip .v{display:block;font-weight:800;font-size:.95rem;letter-spacing:.02em}
+.fact{
+  /* the gold of the band these cards replaced */
+  background:linear-gradient(160deg,var(--gold-lt),var(--gold) 45%,var(--gold-deep));
+  color:#150f02;
+  border:1px solid rgba(0,0,0,.24);border-radius:12px;
+  padding:1.15rem 1.25rem;
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+}
+.fact:hover{transform:translateY(-4px);border-color:rgba(0,0,0,.45);
+  box-shadow:0 14px 32px rgba(0,0,0,.55)}
+.fact-ic{
+  width:26px;height:26px;display:block;margin-bottom:.75rem;
+  fill:none;stroke:#150f02;stroke-width:1.7;opacity:.82;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.fact b{display:block;font-size:1.02rem;font-weight:800;letter-spacing:.01em;line-height:1.3}
+.fact span{display:block;margin-top:.3rem;opacity:.68;
+  font-size:.68rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
 
 /* ---------- shared section chrome ---------- */
 .section{position:relative;padding:clamp(3.5rem,7vw,6rem) 0;isolation:isolate}
@@ -265,14 +259,14 @@ h1,h2,h3{margin:0;line-height:1.05}
 
 .board-mark{
   position:absolute;top:clamp(1.1rem,2.6vw,2rem);height:clamp(42px,5.2vw,72px);width:auto;
-  background:#fff;border-radius:8px;padding:.5rem .8rem;object-fit:contain;
+  object-fit:contain;
 }
 .board-mark-pca{left:clamp(1.6rem,4.5vw,3.6rem)}
 /* the league mark ships as a crest only, so the wordmark beside it is set in type */
 .board-mark-sep{right:clamp(1.6rem,4.5vw,3.6rem);display:flex;align-items:center;gap:.55rem}
 .board-mark-sep img{height:100%;width:auto;object-fit:contain}
 .board-mark-sep span{
-  color:var(--navy);font-size:clamp(.52rem,.82vw,.8rem);font-weight:900;line-height:1.12;
+  color:#fff;font-size:clamp(.52rem,.82vw,.8rem);font-weight:900;line-height:1.12;
   letter-spacing:.02em;text-transform:uppercase;
 }
 .board-mark-sep em{font-style:normal;font-weight:700;font-size:.86em}
@@ -420,7 +414,7 @@ h1,h2,h3{margin:0;line-height:1.05}
   .teams-board{padding-bottom:clamp(1.6rem,5vw,2.4rem)}
   .teams-copy .eyebrow{letter-spacing:.18em;font-size:.66rem}
   /* small screens: the marks and the chips shrink so six of them still read as a row */
-  .board-mark{height:clamp(30px,8vw,44px);padding:.35rem .5rem;border-radius:6px}
+  .board-mark{height:clamp(30px,8vw,44px)}
   .board-mark-sep{gap:.4rem}
   .team-logos{grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem}
   .team-chip{padding:.6rem .35rem;border-radius:8px}
@@ -473,7 +467,7 @@ h1,h2,h3{margin:0;line-height:1.05}
 .footer-bar-in{display:flex;align-items:center;justify-content:space-between;
   gap:1rem;flex-wrap:wrap}
 .f-marks{display:flex;align-items:center;gap:1rem}
-.f-marks img{height:44px;width:auto;border-radius:4px}
+.f-marks img{height:44px;width:auto}
 .footer-bar p{margin:0;color:#6b7788;font-size:.78rem}
 .hash{color:var(--gold);font-weight:800;margin-left:.4rem}
 
@@ -500,15 +494,21 @@ h1,h2,h3{margin:0;line-height:1.05}
   .nav-toggle{display:block;order:3}
   .header-marks{margin-left:auto;order:2;padding-left:1rem}
   .header-marks img{height:32px}
-  .header-marks .pca{height:24px}
+  .header-marks .pca{height:26px}
 }
 @media (max-width:680px){
   :root{--hdr:64px}
   .brand img{height:42px}
-  .hero-strip{grid-template-columns:1fr}
-  .hero-strip div + div{border-left:0;border-top:1px solid rgba(0,0,0,.22)}
-  /* keep the shorter hoardings pinned to the top now that the lead slide is taller */
-  .slides{align-items:flex-start}
+  /* three across on phones too, so the type shrinks with the viewport instead of stacking */
+  .hero-facts{gap:.45rem;padding-block:.9rem 1.2rem}
+  /* the icon drops onto the label row so the card stays a wide, shallow rectangle */
+  .fact{
+    display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .3rem;
+    padding:.5rem .55rem;border-radius:8px;
+  }
+  .fact b{order:1;flex:0 0 100%;font-size:clamp(.55rem,2.3vw,.74rem);line-height:1.18}
+  .fact-ic{order:2;width:13px;height:13px;margin:0;stroke-width:2}
+  .fact span{order:3;margin-top:0;font-size:clamp(.42rem,1.6vw,.52rem);letter-spacing:.09em}
   /* the line stays on the artwork, dropped to the foot of the frame so it clears
      the face and the dates panel, with a scrim carrying it over the jersey */
   .hero-copy{
@@ -520,10 +520,7 @@ h1,h2,h3{margin:0;line-height:1.05}
     background:linear-gradient(to top right,rgba(6,8,14,.94) 10%,rgba(6,8,14,.5) 40%,transparent 64%);
   }
   /* crop the empty left flank so the artwork fills more of the phone screen */
-  .slide-lead img{aspect-ratio:1.05;object-fit:cover;object-position:100% 50%}
-  .slider-btn{width:38px;height:38px}
-  .slider-btn.prev{left:.6rem}
-  .slider-btn.next{right:.6rem}
+  .slide-lead img{aspect-ratio:.95;object-fit:cover;object-position:100% 50%}
   .icon-grid{grid-template-columns:1fr}
   /* the roster is an odd number, so cap the width or the last card stretches full bleed */
   .squad-card{flex:1 1 calc(50% - .6rem);max-width:calc(50% - .6rem)}
@@ -536,6 +533,5 @@ h1,h2,h3{margin:0;line-height:1.05}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .slides{transition:none}
   *{animation-duration:.001ms !important}
 }
