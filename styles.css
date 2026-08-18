@@ -519,16 +519,20 @@ h1,h2,h3{margin:0;line-height:1.05}
     /* fades toward the top right so the dates panel and the Sony marks stay clean */
     background:linear-gradient(to top right,rgba(6,8,14,.94) 10%,rgba(6,8,14,.5) 40%,transparent 64%);
   }
-  /* crop the empty left flank so the artwork fills more of the phone screen */
-  .slide-lead img{aspect-ratio:.95;object-fit:cover;object-position:100% 50%}
+  /* crop the empty left flank, and a sliver of the right margin with it, so the
+     artwork stands taller on the phone without cutting into the player's face */
+  .slide-lead img{aspect-ratio:.9;object-fit:cover;object-position:95% 50%}
   /* the marquee and icon cards run narrower than the column on phones — full bleed
      made the portraits and the stat panel tower over everything under them */
-  .marquee-grid{max-width:330px}
-  .icon-grid{grid-template-columns:1fr;max-width:330px}
+  .marquee-grid{max-width:285px}
+  .icon-grid{grid-template-columns:1fr;max-width:285px}
   /* the roster is an odd number, so cap the width or the last card stretches full bleed */
   .squad-card{flex:1 1 calc(50% - .6rem);max-width:calc(50% - .6rem)}
   .panel-body{grid-template-columns:1fr;gap:1.4rem}
-  .stat-panel{gap:1.2rem;padding:1.25rem}
+  .stat-panel{gap:1.1rem;padding:1.1rem}
+  /* the narrower panel broke the name across two lines at the clamp's floor */
+  .panel-head h3{font-size:1.5rem}
+  .panel-line{font-size:.84rem;padding-bottom:1rem}
   .stats{border-left:0;padding-left:0;border-top:1px solid rgba(255,255,255,.14);padding-top:1rem}
   .footer-grid{grid-template-columns:1fr}
   .footer-bar-in{justify-content:center;text-align:center}
