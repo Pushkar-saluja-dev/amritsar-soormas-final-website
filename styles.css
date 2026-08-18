@@ -78,6 +78,24 @@ h1,h2,h3{margin:0;line-height:1.05}
 .slides{display:flex;transition:transform .6s cubic-bezier(.6,.05,.2,1)}
 .slide{flex:0 0 100%;margin:0}
 .slide img{width:100%;height:auto}
+
+/* The lead banner ships with an intentionally empty left third; the campaign line
+   sits in it on desktop. On phones that dead space is cropped away instead — see
+   the 680px block, where the line moves above the artwork. */
+.slide-lead{position:relative}
+.hero-copy{
+  position:absolute;left:5.2%;top:50%;transform:translateY(-50%);z-index:2;
+  font-family:var(--display);text-transform:uppercase;
+  font-size:4.1vw;line-height:1.14;letter-spacing:.02em;
+  text-shadow:0 2px 18px rgba(0,0,0,.55);
+}
+.hero-copy span{display:block}
+.hero-copy-hit{
+  color:var(--gold-lt);
+  background:linear-gradient(90deg,#f4d49a,var(--gold-lt) 60%,var(--gold));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
 .slider-btn{
   position:absolute;top:50%;transform:translateY(-50%);z-index:5;
   width:48px;height:48px;border-radius:50%;cursor:pointer;
@@ -489,6 +507,20 @@ h1,h2,h3{margin:0;line-height:1.05}
   .brand img{height:42px}
   .hero-strip{grid-template-columns:1fr}
   .hero-strip div + div{border-left:0;border-top:1px solid rgba(0,0,0,.22)}
+  /* keep the shorter hoardings pinned to the top now that the lead slide is taller */
+  .slides{align-items:flex-start}
+  /* the line stays on the artwork, dropped to the foot of the frame so it clears
+     the face and the dates panel, with a scrim carrying it over the jersey */
+  .hero-copy{
+    left:0;right:0;top:auto;bottom:0;transform:none;
+    padding:4rem 1.1rem 2.4rem;
+    font-size:clamp(1.5rem,7vw,2.3rem);line-height:1.12;
+    text-shadow:0 2px 14px rgba(0,0,0,.85);
+    /* fades toward the top right so the dates panel and the Sony marks stay clean */
+    background:linear-gradient(to top right,rgba(6,8,14,.94) 10%,rgba(6,8,14,.5) 40%,transparent 64%);
+  }
+  /* crop the empty left flank so the artwork fills more of the phone screen */
+  .slide-lead img{aspect-ratio:1.05;object-fit:cover;object-position:100% 50%}
   .slider-btn{width:38px;height:38px}
   .slider-btn.prev{left:.6rem}
   .slider-btn.next{right:.6rem}
